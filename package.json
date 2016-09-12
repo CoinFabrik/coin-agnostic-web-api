@@ -1,7 +1,9 @@
 {
   "name": "coin-agnostic-web-api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "main": "index.js",
+  "author": "Fernando Tiberti <fernando.tiberti@coinfabrik.com>",
   "scripts": {
     "start": "node ./bin/www"
   },
