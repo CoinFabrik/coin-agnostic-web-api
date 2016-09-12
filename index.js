@@ -21,12 +21,10 @@ function checkInterface(coin) {
 
 function webApi(coin) {
   checkInterface(coin);
-  //tweak express app
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
       coin.registerExtraRoutes(app);
     }
-    //register default routes here
     app.use('/api', apiRoutes(coin));
   });
 
