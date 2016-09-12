@@ -1,13 +1,26 @@
 var configureApp = require('./configure-app');
-var serverStarter = require('./bin/www');
+var startServer = require('./bin/www');
 var apiRoutes = require('./routes/api');
 
+function assertProp(coin, single, batch) {
+  if (!batch && !coin[single]) {
+    throw 'Expected the coin to have "' + single + '" implemented';
+  } else if (!coin[single] && !coin[batch]) {
+    throw 'Expected the coin to have "' + single + '" or ' + batch +
+     ' implemented';
+  }
+}
+
+function checkInterface(coin) {
+  assertProp(coin, 'name');
+  assertProp(coin, 'getBalance', 'getBalances');
+  assertProp(coin, 'getFullTx', 'getTxDetails');
+  assertProp(coin, 'getTxIDs', 'getTxList');
+  assertProp(coin, 'sendRawTx');
+}
+
 function webApi(coin) {
-  //check coin interface
-
-  //coin.name
-  //coin.registerExtraRoutes
-
+  checkInterface(coin);
   //tweak express app
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
@@ -18,8 +31,8 @@ function webApi(coin) {
   });
 
   return {
-    startServer(cb) {
-      serverStarter(app, cb);
+    start(cb) {
+      startServer(app, cb);
     }
   }
 }
