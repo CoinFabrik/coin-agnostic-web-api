@@ -14,20 +14,6 @@ function completeCoin() {
   });
 }
 
-function minimalImplementation() {
-  return Object.create();
-}
-
-function batchImplementation() {
-  return Object.create({
-    name: 'asdf',
-    getBalances() {},
-    getTxDetails() {},
-    getTxList() {},
-    sendRawTx() {}
-  });
-}
-
 test('A coin has no name', (t) => {
   let coin = completeCoin();
   coin.name = undefined;
