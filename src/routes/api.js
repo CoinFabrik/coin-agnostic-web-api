@@ -61,6 +61,24 @@ function configureRoutes(coin) {
     })
   })
 
+  router.post('/rawTransaction', (req, res, next) => {
+    var tx = req.body.transaction;
+    console.log('transaction: ' + tx);
+    coin.sendRawTx(tx, (err, txid) => {
+      if (err) {
+        res.status(400);
+        //TODO: Incorporate Ethererum Full Node codes and messages
+        res.json({
+          subCode: 1,
+          message: "Error sending transaction: " + err
+        })
+      } else {
+        res.status(200);
+        res.json({success: true, txid: txid});
+      }
+    })
+  })
+
   return router;
 }
 
