@@ -10,13 +10,14 @@ function validateAddrs(req, res, next) {
 }
 
 function configureRoutes(coin) {
-  router.get('/balance/:addrs', validateAddrs, function(req, res, next) {
+  router.get('/balance/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.addrs;
     coin.getBalances(addrs, (err, balances) => {
       if (err) {
         res.status(400);
+        //TODO: Incorporate Ethererum Full Node codes and messages
         res.json({
-          subCode: 1,//TODO: Incorporate Ethererum Full Node codes
+          subCode: 1,
           message: "Error getting balances: " + err
         })
       } else {
@@ -26,6 +27,39 @@ function configureRoutes(coin) {
     })
   });
 
+  router.get('/transactions/:addrs', validateAddrs, (req, res, next) => {
+    var addrs = req.addrs;
+    coin.getTxList(addrs, (err, txLists) => {
+      if (err) {
+        res.status(400);
+        //TODO: Incorporate Ethererum Full Node codes and messages
+        res.json({
+          subCode: 1,
+          message: "Error getting transaction hashes: " + err
+        })
+      } else {
+        res.status(200);
+        res.json(txLists);
+      }
+    })
+  })
+
+  router.get('/transactionInfo/:txids', (req, res, next) => {
+    var txids = req.params.txids.split(',');
+    coin.getTxDetails(txids, (err, txs) => {
+      if (err) {
+        res.status(400);
+        //TODO: Incorporate Ethererum Full Node codes and messages
+        res.json({
+          subCode: 1,
+          message: "Error getting transactions: " + err
+        })
+      } else {
+        res.status(200);
+        res.json(txs);
+      }
+    })
+  })
 
   return router;
 }
