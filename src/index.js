@@ -19,13 +19,17 @@ function checkInterface(coin) {
   assertProp(coin, 'sendRawTx');
 }
 
+function urlEncodeName(name) {
+  return name.replace(/\s+/g, '').toLowerCase();
+}
+
 function webApi(coin) {
   checkInterface(coin);
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
       coin.registerExtraRoutes(app);
     }
-    app.use('/api', apiRoutes(coin));
+    app.use('/api/' + urlEncodeName(coin.name), apiRoutes(coin));
   });
 
   return {
