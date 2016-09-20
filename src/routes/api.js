@@ -61,7 +61,7 @@ function configureRoutes(coin) {
     })
   })
 
-  router.post('/rawTransaction', (req, res, next) => {
+  router.put('/rawTransaction', (req, res, next) => {
     var tx = req.body.transaction;
     console.log('transaction: ' + tx);
     coin.sendRawTx(tx, (err, txid) => {
