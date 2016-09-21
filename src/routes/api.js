@@ -29,7 +29,12 @@ function configureRoutes(coin) {
 
   router.get('/transactions/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.addrs;
-    coin.getTxList(addrs, (err, txLists) => {
+    var options = {
+      start: req.query.start,
+      limit: req.query.limit,
+      order: req.query.order
+    };
+    coin.getTxList(addrs, options, (err, txLists) => {
       if (err) {
         res.status(400);
         //TODO: Incorporate Ethererum Full Node codes and messages
