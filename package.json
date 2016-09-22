@@ -15,7 +15,8 @@
     "express": "~4.13.4",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "request-ip" : "^1.2.2"
   },
   "devDependencies": {
     "tape": "^4.6.0"
