@@ -1,6 +1,7 @@
 var configureApp = require('./configure-app');
 var startServer = require('./bin/www');
 var apiRoutes = require('./routes/api');
+var log = require('./tools/log');
 
 function assertProp(coin, single, batch) {
   if (!batch && !coin[single]) {
@@ -25,6 +26,8 @@ function urlEncodeName(name) {
 }
 
 function webApi(coin) {
+  app.use(log.logRequest);
+  log.initialize();
   checkInterface(coin);
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
