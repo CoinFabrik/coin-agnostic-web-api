@@ -10,6 +10,8 @@ function completeCoin() {
     getTxDetails() {},
     getTxIDs() {},
     getTxList() {},
+    getTxParam() {},
+    getTxParams() {},
     sendRawTx() {}
   });
 }
@@ -39,6 +41,7 @@ test('Accept minimal implementation coin', (t) => {
       getBalance() {},
       getFullTx() {},
       getTxIDs() {},
+      getTxParam() {},
       sendRawTx() {}
     });
   }
@@ -53,6 +56,7 @@ test('Accept coin with batch functions implemented', (t) => {
       getBalances() {},
       getTxDetails() {},
       getTxList() {},
+      getTxParams() {},
       sendRawTx() {}
     });
   }

@@ -66,6 +66,22 @@ function configureRoutes(coin) {
     })
   })
 
+  router.get('/transactionParams/:addrs', validateAddrs, (req, res, next) => {
+    var addrs = req.params.addrs.split(',');
+    coin.getTxParams(addrs, (err, params) => {
+      if (err) {
+        res.status(400);
+        res.json({
+          subCode: 1,
+          message: 'Error getting tx params' + err
+        })
+      } else {
+        res.status(200);
+        res.json(params);
+      }
+    })
+  })
+
   router.put('/rawTransaction', (req, res, next) => {
     var tx = req.body.transaction;
     console.log('transaction: ' + tx);
