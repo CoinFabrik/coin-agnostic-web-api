@@ -6,6 +6,7 @@ function configureApp(registerRoutes) {
   var cookieParser = require('cookie-parser');
   var bodyParser = require('body-parser');
   var cors = require('cors');
+  var log = require('./tools/log');
   var trafficController = require('./tools/trafficController');
 
   var app = express();
@@ -24,6 +25,7 @@ function configureApp(registerRoutes) {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
   app.all('/api/*', trafficController.floodControl);
+  app.use(log.logRequest);
 
   registerRoutes(app);
 

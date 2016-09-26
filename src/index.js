@@ -26,8 +26,6 @@ function urlEncodeName(name) {
 }
 
 function webApi(coin) {
-  app.use(log.logRequest);
-  log.initialize();
   checkInterface(coin);
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
