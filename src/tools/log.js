@@ -59,7 +59,7 @@ exports.logRequest = function (req, res, next) {
                         + '\x1b[0m';
 
             if (null == line) return;
-            logger.log(line);
+            console.log(line);
         };
 
         res.on('finish', logRequest);
