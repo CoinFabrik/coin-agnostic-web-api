@@ -40,7 +40,7 @@ function configureApp(registerRoutes) {
 
   // development error handler
   // will print stacktrace
-  /*  if (app.get('env') === 'development') {
+  /* if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
       res.status(err.status || 500);
       res.render('error', {
@@ -54,7 +54,7 @@ function configureApp(registerRoutes) {
   // no stacktraces leaked to user
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.json({
       message: err.message,
       error: {}
     });
