@@ -36,7 +36,7 @@ function webApi(coin) {
 
   return {
     start(cb) {
-      startServer(app, cb);
+      startServer(app, coin.port, cb);
     }
   }
 }

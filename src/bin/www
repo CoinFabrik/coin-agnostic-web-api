@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-module.exports = function(app, cb) {
+module.exports = function(app, port, cb) {
   var debug = require('debug')('coin-agnostic-web-api:server');
   var http = require('http');
 
@@ -12,7 +12,7 @@ module.exports = function(app, cb) {
    * Get port from environment and store in Express.
    */
 
-  var port = normalizePort(process.env.PORT || '3000');
+  var port = normalizePort(process.env.PORT || port || '3000');
   app.set('port', port);
 
   /**
