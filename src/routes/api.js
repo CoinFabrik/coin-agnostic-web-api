@@ -71,7 +71,7 @@ function configureRoutes(coin) {
     var options = {
       includeUnconfirmeds: req.query.includeUnconfirmeds
     };
-    coin.getTxParams(addrs, includeUnconfirmeds, (err, params) => {
+    coin.getTxParams(addrs, options, (err, params) => {
       if (err) {
         res.status(400);
         res.json({
