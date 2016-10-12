@@ -68,7 +68,10 @@ function configureRoutes(coin) {
 
   router.get('/transactionParams/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.params.addrs.split(',');
-    coin.getTxParams(addrs, (err, params) => {
+    var options = {
+      includeUnconfirmeds: req.query.includeUnconfirmeds
+    };
+    coin.getTxParams(addrs, includeUnconfirmeds, (err, params) => {
       if (err) {
         res.status(400);
         res.json({
@@ -107,6 +110,21 @@ function configureRoutes(coin) {
     })
   }
   })
+
+  router.get('/blockchainInfo', (req, res, next) => {
+      coin.getBlockchainInfo((err, info) => {
+        if (err) {
+          res.status(400);
+          res.json({
+            subCode: 1,
+            message: 'Error getting blockchain info: ' + err
+          })
+        } else {
+          res.status(200);
+          res.json(info);
+        }
+      })
+  });
 
   return router;
 }
