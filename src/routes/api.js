@@ -1,15 +1,26 @@
 var express = require('express');
 var router = express.Router();
-
-function validateAddrs(req, res, next) {
-  req.addrs = req.params.addrs.split(',');
-  //TODO: Check that the addresses are valid
-  //check(req, res, next, req.addrs);
-  next();
-
-}
+var responses = require('../tools/responses.js');
 
 function configureRoutes(coin) {
+  var validateAddrs = function (req, res, next) {
+    req.addrs = req.params.addrs.split(',');
+    if (coin.validateAddress && !req.addrs.every(coin.validateAddress)) {
+      responses.sendResponse(responses.E_ETH_ADDRESS_INVALID, res);
+      return;
+    }
+    next();
+  }
+
+  var validateTxid = function (req, res, next) {
+    req.txids = req.params.txids.split(',');
+    if (coin.validateTxid && !req.txids.every(coin.validateTxid)) {
+      responses.sendResponse(responses.E_ETH_TX_HASH_INVALID, res);
+      return;
+    }
+    next();
+  }
+
   router.get('/balance/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.addrs;
     coin.getBalances(addrs, (err, balances) => {
@@ -49,9 +60,8 @@ function configureRoutes(coin) {
     })
   })
 
-  router.get('/transactionInfo/:txids', (req, res, next) => {
-    var txids = req.params.txids.split(',');
-    coin.getTxDetails(txids, (err, txs) => {
+  router.get('/transactionInfo/:txids', validateTxid, (req, res, next) => {
+    coin.getTxDetails(req.txids, (err, txs) => {
       if (err) {
         res.status(400);
         //TODO: Incorporate Ethererum Full Node codes and messages
