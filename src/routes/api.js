@@ -6,7 +6,7 @@ function configureRoutes(coin) {
   var validateAddrs = function (req, res, next) {
     req.addrs = req.params.addrs.split(',');
     if (coin.validateAddress && !req.addrs.every(coin.validateAddress)) {
-      responses.sendResponse(responses.E_ETH_ADDRESS_INVALID, res);
+      responses.sendResponse(responses.E_ADDRESS_INVALID, res);
       return;
     }
     next();
@@ -15,7 +15,7 @@ function configureRoutes(coin) {
   var validateTxid = function (req, res, next) {
     req.txids = req.params.txids.split(',');
     if (coin.validateTxid && !req.txids.every(coin.validateTxid)) {
-      responses.sendResponse(responses.E_ETH_TX_HASH_INVALID, res);
+      responses.sendResponse(responses.E_TX_HASH_INVALID, res);
       return;
     }
     next();
