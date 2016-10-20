@@ -115,13 +115,14 @@ function configureRoutes(coin) {
           })
         } else {
           res.status(200);
-      res.json({success: true, txid: txid});
+          res.json({success: true, txid: txid});
+        }
+      })
     }
-    })
-  }
   })
 
-  router.get('/blockchainInfo', (req, res, next) => {
+  if (coin.getBlockchainInfo) {
+    router.get('/blockchainInfo', (req, res, next) => {
       coin.getBlockchainInfo((err, info) => {
         if (err) {
           res.status(400);
@@ -134,8 +135,9 @@ function configureRoutes(coin) {
           res.json(info);
         }
       })
-  });
-
+    })
+  }
+  
   return router;
 }
 
