@@ -18,6 +18,7 @@ function checkInterface(coin) {
   assertProp(coin, 'getFullTx', 'getTxDetails');
   assertProp(coin, 'getTxIDs', 'getTxList');
   assertProp(coin, 'getTxParam', 'getTxParams');
+  assertProp(coin, 'getBlockchainInf', 'getBlockchainInfo');
   assertProp(coin, 'sendRawTx');
 }
 
