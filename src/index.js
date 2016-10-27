@@ -2,6 +2,7 @@ var configureApp = require('./configure-app');
 var startServer = require('./bin/www');
 var apiRoutes = require('./routes/api');
 var log = require('./tools/log');
+var responses = require('./tools/responses');
 var _async = require('async');
 var _ = require('lodash');
 
@@ -74,5 +75,7 @@ function webApi(coin) {
     }
   }
 }
+
+webApi.responses = responses;
 
 module.exports = webApi;

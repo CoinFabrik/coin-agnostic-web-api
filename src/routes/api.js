@@ -25,15 +25,17 @@ function configureRoutes(coin) {
     var addrs = req.addrs;
     coin.getBalances(addrs, (err, balances) => {
       if (err) {
-        res.status(400);
-        //TODO: Incorporate Ethererum Full Node codes and messages
-        res.json({
-          subCode: 1,
-          message: "Error getting balances: " + err
-        })
+        if (err.errCode) {
+          responses.sendResponse(err.errCode, res, err.errMessage);
+        } else {
+          res.status(400);
+          res.json({
+            subCode: 1,
+            message: "Error getting balances: " + err
+          })
+        }
       } else {
-        res.status(200);
-        res.json(balances);
+        responses.sendResponse(responses.S_SUCCESS, res, balances);
       }
     })
   });
@@ -47,15 +49,17 @@ function configureRoutes(coin) {
     };
     coin.getTxList(addrs, options, (err, txLists) => {
       if (err) {
-        res.status(400);
-        //TODO: Incorporate Ethererum Full Node codes and messages
-        res.json({
-          subCode: 1,
-          message: "Error getting transaction hashes: " + err
-        })
+        if (err.errCode) {
+          responses.sendResponse(err.errCode, res, err.errMessage);
+        } else {
+          res.status(400);
+          res.json({
+            subCode: 1,
+            message: "Error getting transaction hashes: " + err
+          })
+        }
       } else {
-        res.status(200);
-        res.json(txLists);
+        responses.sendResponse(responses.S_SUCCESS, res, txLists);
       }
     })
   })
@@ -63,15 +67,17 @@ function configureRoutes(coin) {
   router.get('/transactionInfo/:txids', validateTxid, (req, res, next) => {
     coin.getTxDetails(req.txids, (err, txs) => {
       if (err) {
-        res.status(400);
-        //TODO: Incorporate Ethererum Full Node codes and messages
-        res.json({
-          subCode: 1,
-          message: "Error getting transactions: " + err
-        })
+        if (err.errCode) {
+          responses.sendResponse(err.errCode, res, err.errMessage);
+        } else {
+          res.status(400);
+          res.json({
+            subCode: 1,
+            message: "Error getting transactions: " + err
+          })
+        }
       } else {
-        res.status(200);
-        res.json(txs);
+        responses.sendResponse(responses.S_SUCCESS, res, txs);
       }
     })
   })
@@ -79,18 +85,21 @@ function configureRoutes(coin) {
   router.get('/transactionParams/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.params.addrs.split(',');
     var options = {
-      includeUnconfirmeds: req.query.includeUnconfirmeds
+      includeUnconfirmed: req.query.includeUnconfirmed
     };
     coin.getTxParams(addrs, options, (err, params) => {
       if (err) {
-        res.status(400);
-        res.json({
-          subCode: 1,
-          message: 'Error getting tx params: ' + err
-        })
+        if (err.errCode) {
+          responses.sendResponse(err.errCode, res, err.errMessage);
+        } else {
+          res.status(400);
+          res.json({
+            subCode: 1,
+            message: 'Error getting tx params: ' + err
+          })
+        }
       } else {
-        res.status(200);
-        res.json(params);
+        responses.sendResponse(responses.S_SUCCESS, res, params);
       }
     })
   })
@@ -99,23 +108,21 @@ function configureRoutes(coin) {
     var tx = req.body.transaction;
     console.log('transaction: ' + tx);
     if (tx === null || tx === '') {
-      res.status(400);
-      res.json({
-        subCode: 1,
-        message: "Cannot send null tx"
-      })
+      responses.sendResponse(responses.E_SEND_NULL_TX_INVALID, res);
     } else {
       coin.sendRawTx(tx, (err, txid) => {
         if (err) {
-          res.status(400);
-          //TODO: Incorporate Ethererum Full Node codes and messages
-          res.json({
-            subCode: 1,
-            message: "Error sending transaction: " + err
-          })
+          if (err.errCode) {
+            responses.sendResponse(err.errCode, err.errMessage);
+          } else {
+            res.status(400);
+            res.json({
+              subCode: 1,
+              message: "Error sending transaction: " + err
+            })
+          }
         } else {
-          res.status(200);
-          res.json({success: true, txid: txid});
+          responses.sendResponse(responses.S_SUCCESS, res, {success: true, txid: txid});
         }
       })
     }
@@ -125,36 +132,43 @@ function configureRoutes(coin) {
     router.get('/blockchainInfo', (req, res, next) => {
       coin.getBlockchainInfo((err, info) => {
         if (err) {
-          res.status(400);
-          res.json({
-            subCode: 1,
-            message: 'Error getting blockchain info: ' + err
-          })
+          if (err.errCode) {
+            responses.sendResponse(err.errCode, res, err.errMessage);
+          } else {
+            res.status(400);
+            res.json({
+              subCode: 1,
+              message: 'Error getting blockchain info: ' + err
+            })
+          }
         } else {
-          res.status(200);
-          res.json(info);
+          responses.sendResponse(responses.S_SUCCESS, res, info);
         }
       })
     })
   }
 
   if (coin.getUnconfirmedTxList) {
-      router.get('/unconfirmedTransactions/:addrs', validateAddrs, (req, res, next) => {
-        var addrs = req.addrs;
-        coin.getUnconfirmedTxList(addrs, (err, txLists) => {
-          if (err) {
+    router.get('/unconfirmedTransactions/:addrs', validateAddrs, (req, res, next) => {
+      var addrs = req.addrs;
+      coin.getUnconfirmedTxList(addrs, (err, txLists) => {
+        if (err) {
+          if (err.errCode) {
+            responses.sendResponse(err.errCode, res, err.errMessage);
+          } else {
             res.status(400);
             //TODO: Incorporate Ethererum Full Node codes and messages
             res.json({
               subCode: 1,
               message: "Error getting transaction hashes: " + err
             })
-          } else {
-            res.status(200);
-            res.json(txLists);
           }
-        })
+        } else {
+          res.status(200);
+          res.json(txLists);
+        }
       })
+    })
   }
 
 
