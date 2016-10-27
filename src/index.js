@@ -2,6 +2,16 @@ var configureApp = require('./configure-app');
 var startServer = require('./bin/www');
 var apiRoutes = require('./routes/api');
 var log = require('./tools/log');
+var _async = require('async');
+var _ = require('lodash');
+
+//Map single methods to batch methods.
+var batchMethods = {
+  getBalance: 'getBalances',
+  getFullTx: 'getTxDetails',
+  getTxIDs: 'getTxList',
+  getTxParam: 'getTxParams'
+};
 
 function assertProp(coin, single, batch) {
   if (!batch && !coin[single]) {
@@ -14,11 +24,34 @@ function assertProp(coin, single, batch) {
 
 function checkInterface(coin) {
   assertProp(coin, 'name');
-  assertProp(coin, 'getBalance', 'getBalances');
-  assertProp(coin, 'getFullTx', 'getTxDetails');
-  assertProp(coin, 'getTxIDs', 'getTxList');
-  assertProp(coin, 'getTxParam', 'getTxParams');
   assertProp(coin, 'sendRawTx');
+  Object.keys(batchMethods).forEach(singleMethod => {
+    assertProp(coin, singleMethod, batchMethods[singleMethod]);
+  });
+}
+
+function addMissingBatchMethods(coin) {
+  Object.keys(batchMethods).forEach(singleMethod => {
+    var batchMethod = batchMethods[singleMethod];
+    if(coin[batchMethod]) {
+      return;
+    }
+    coin[batchMethod] = function(keys, options, cb) {
+      _async.map(keys, (key, next) => {
+        if (cb) {
+          coin[singleMethod].call(coin, key, options, next);
+        } else {
+          coin[singleMethod].call(coin, key, next);
+        }
+      }, function(err, things) {
+        cb = cb || options;
+        if (err) {
+          return cb(err);
+        }
+        cb(null, _.zipObject(keys, things));
+      });
+    }
+  });
 }
 
 function urlEncodeName(name) {
@@ -27,6 +60,7 @@ function urlEncodeName(name) {
 
 function webApi(coin) {
   checkInterface(coin);
+  addMissingBatchMethods(coin);
   var app = configureApp((app) => {
     if (coin.registerExtraRoutes) {
       coin.registerExtraRoutes(app);
