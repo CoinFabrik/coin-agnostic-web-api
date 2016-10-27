@@ -17,6 +17,8 @@ exports.E_BLOCK_HASH_INVALID            = 114;
 exports.E_TRANSACTION_BINARY_INVALID    = 115;
 exports.E_LAST_QUERY_INFO_INVALID       = 116;
 
+exports.E_SEND_NULL_TX_INVALID          = 120;
+
 exports.E_DAO_TOKEN_INVALID                 = 150;
 exports.E_DAO_ARRAY_TOKEN_INVALID = 151;
 exports.E_DAO_ERROR = 152;
@@ -30,6 +32,10 @@ exports.E_DB                    = 300;
 exports.E_QUERY_DIRECTION_INVALID  = 400;
 exports.E_QUERY_LIMIT_INVALID = 401;
 exports.E_QUERY_PREVIOUS_NEXT_INVALID = 402;
+
+exports.E_RPC_CALL_ERROR = 450;
+
+exports.E_UNKNOWN_ERROR = 900;
 
 var errorMessages = {};
 errorMessages[exports.S_SUCCESS] = 'Success';
@@ -47,6 +53,7 @@ errorMessages[exports.E_BLOCK_HASH_INVALID] = 'Invalid block hash';
 errorMessages[exports.E_TRANSACTION_BINARY_INVALID] = 'Invalid binary transaction';
 errorMessages[exports.E_LAST_QUERY_INFO_INVALID] = 'Invalid Last Query info object. Use the object returned by the previous call.';
 
+errorMessages[exports.E_SEND_NULL_TX_INVALID] = 'Cannot send null tx';
 
 errorMessages[exports.E_DAO_TOKEN_INVALID] = 'Invalid TheDAO token';
 errorMessages[exports.E_DAO_ARRAY_TOKEN_INVALID] = 'Invalid array of TheDAO tokens';
@@ -68,6 +75,9 @@ errorMessages[exports.E_QUERY_DIRECTION_INVALID] = 'Invalid query direction';
 errorMessages[exports.E_QUERY_LIMIT_INVALID] = 'Invalid query limit';
 errorMessages[exports.E_QUERY_PREVIOUS_NEXT_INVALID] = 'Invalid query parameter it should be next or previous';
 
+errorMessages[exports.E_RPC_ERROR] = 'Remote procedure call failed';
+
+errorMessages[exports.E_UNKNOWN_ERROR] = 'Unknown error';
 
 exports.sendResponse = function (code, res, result) {
     if (code === exports.S_SUCCESS) {

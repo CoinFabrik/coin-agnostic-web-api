@@ -2,6 +2,7 @@ var configureApp = require('./configure-app');
 var startServer = require('./bin/www');
 var apiRoutes = require('./routes/api');
 var log = require('./tools/log');
+var responses = require('./tools/responses');
 
 function assertProp(coin, single, batch) {
   if (!batch && !coin[single]) {
@@ -40,5 +41,7 @@ function webApi(coin) {
     }
   }
 }
+
+webApi.responses = responses;
 
 module.exports = webApi;
