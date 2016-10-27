@@ -148,6 +148,30 @@ function configureRoutes(coin) {
     })
   }
 
+  if (coin.getUnconfirmedTxList) {
+    router.get('/unconfirmedTransactions/:addrs', validateAddrs, (req, res, next) => {
+      var addrs = req.addrs;
+      coin.getUnconfirmedTxList(addrs, (err, txLists) => {
+        if (err) {
+          if (err.errCode) {
+            responses.sendResponse(err.errCode, res, err.errMessage);
+          } else {
+            res.status(400);
+            //TODO: Incorporate Ethererum Full Node codes and messages
+            res.json({
+              subCode: 1,
+              message: "Error getting transaction hashes: " + err
+            })
+          }
+        } else {
+          res.status(200);
+          res.json(txLists);
+        }
+      })
+    })
+  }
+
+
   return router;
 }
 
