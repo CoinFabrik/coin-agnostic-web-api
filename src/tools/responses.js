@@ -29,9 +29,9 @@ exports.E_DAO_PROPOSAL_ID_INVALID = 155;
 exports.E_ETH_WEB3 = 200;
 exports.E_DB                    = 300;
 
-exports.E_QUERY_DIRECTION_INVALID  = 400;
+exports.E_QUERY_ORDER_INVALID  = 400;
 exports.E_QUERY_LIMIT_INVALID = 401;
-exports.E_QUERY_PREVIOUS_NEXT_INVALID = 402;
+exports.E_QUERY_START_INVALID = 402;
 
 exports.E_RPC_CALL_ERROR = 450;
 
@@ -71,9 +71,9 @@ errorMessages[exports.E_TRANSACTION_INDEX_INVALID] = 'Invalid transaction index'
 errorMessages[exports.E_ETH_WEB3] = 'Web3 error';
 errorMessages[exports.E_DB]                     = 'Database error';
 
-errorMessages[exports.E_QUERY_DIRECTION_INVALID] = 'Invalid query direction';
+errorMessages[exports.E_QUERY_ORDER_INVALID] = 'Invalid query order';
 errorMessages[exports.E_QUERY_LIMIT_INVALID] = 'Invalid query limit';
-errorMessages[exports.E_QUERY_PREVIOUS_NEXT_INVALID] = 'Invalid query parameter it should be next or previous';
+errorMessages[exports.E_QUERY_START_INVALID] = 'Invalid query start';
 
 errorMessages[exports.E_RPC_ERROR] = 'Remote procedure call failed';
 
