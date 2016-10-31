@@ -5,19 +5,21 @@
   "main": "src/index.js",
   "author": "Fernando Tiberti <fernando.tiberti@coinfabrik.com>",
   "scripts": {
-    "test": "node test/web-api-test"
+    "test": "node test"
   },
   "dependencies": {
+    "async": "^2.1.2",
     "body-parser": "~1.15.1",
+    "bytes": "^2.4.0",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.1",
     "debug": "~2.2.0",
     "express": "~4.13.4",
     "jade": "~1.11.0",
+    "lodash": "^4.16.4",
     "morgan": "~1.7.0",
+    "request-ip": "^1.2.2",
     "serve-favicon": "~2.3.0",
-    "request-ip" : "^1.2.2",
-    "bytes": "^2.4.0",
     "winston": "2.2.0"
   },
   "devDependencies": {
