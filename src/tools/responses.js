@@ -33,7 +33,7 @@ exports.E_QUERY_ORDER_INVALID  = 400;
 exports.E_QUERY_LIMIT_INVALID = 401;
 exports.E_QUERY_START_INVALID = 402;
 
-exports.E_RPC_CALL_ERROR = 450;
+exports.E_RPC_ERROR = 450;
 
 exports.E_UNKNOWN_ERROR = 900;
 
