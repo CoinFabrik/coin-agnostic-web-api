@@ -28,6 +28,28 @@ function configureRoutes(coin) {
     next();
   }
 
+  if (coin.extraRoutes) {
+    coin.extraRoutes.forEach((route) => {
+      router[route.type].call(router, route.path, (req, res, next) => {
+        route.callback(req, (err, result) => {
+          if (err) {
+            if (err.errCode) {
+              responses.sendResponse(err.errCode, res, err.errMessage)
+            } else {
+              res.status(400);
+              res.json({
+                subCode: 1,
+                message: "Error :" + err
+              });
+            }
+          } else {
+            responses.sendResponse(responses.S_SUCCESS, res, result);
+          }
+        })
+      })
+    })
+  }
+
   router.get('/balance/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.addrs;
     coin.getBalances(addrs, (err, balances) => {
