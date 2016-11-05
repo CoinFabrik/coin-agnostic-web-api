@@ -30,23 +30,27 @@ function configureRoutes(coin) {
 
   if (coin.extraRoutes) {
     coin.extraRoutes.forEach((route) => {
-      router[route.type].call(router, route.path, (req, res, next) => {
-        route.callback(req, (err, result) => {
-          if (err) {
-            if (err.errCode) {
-              responses.sendResponse(err.errCode, res, err.errMessage)
+      if (route.handler && !Array.isArray(route.handler)) {
+        route.handler = [route.handler];
+      } else if (!route.handler) {
+        route.handler = [];
+      }
+      if (route.callback) {
+        route.handler.push((req, res, next) => {
+          route.callback(req.params, (err, result) => {
+            if (err) {
+              if (err.errCode) {
+                responses.sendResponse(err.errCode, res, err.errMessage)
+              } else {
+                responses.sendResponse(responses.E_UNKNOWN_ERROR, res, "Error: " + err.message + " (" + err.code + ")");
+              }
             } else {
-              res.status(400);
-              res.json({
-                subCode: 1,
-                message: "Error :" + err
-              });
+              responses.sendResponse(responses.S_SUCCESS, res, result);
             }
-          } else {
-            responses.sendResponse(responses.S_SUCCESS, res, result);
-          }
-        })
-      })
+          })
+        });
+      }
+      router[route.type].call(router, route.path, route.handler);
     })
   }
 
