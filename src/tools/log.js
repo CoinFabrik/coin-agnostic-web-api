@@ -7,23 +7,17 @@ var path = require('path');
 var winston = require('winston');
 var logger = [];
 
-exports.initLogger = function (name) {
+(function () {
     logger = new (winston.Logger)({
         transports: [
             new (winston.transports.Console)(),
             new (winston.transports.File)({
-                name: name + '-error-file',
-                filename: '../../logs/' + name + '-error.log',
-                level: 'error'
+                filename: config.logFile,
+                level: 'debug'
             }),
-            new (winston.transports.File)({
-                name: name + '-info-file',
-                filename: '../../logs/' + name + '-info.log',
-                level: 'info'
-            })
-    ]
+        ]
     });
-};
+})();
 
 exports.logger = logger;
 
@@ -59,7 +53,7 @@ exports.logRequest = function (req, res, next) {
                         + '\x1b[0m';
 
             if (null == line) return;
-            console.log(line);
+            logger.log(line);
         };
 
         res.on('finish', logRequest);
