@@ -62,7 +62,7 @@ function urlEncodeName(name) {
 function webApi(coin) {
   checkInterface(coin);
   addMissingBatchMethods(coin);
-  var app = configureApp((app) => {
+  var app = configureApp(coin, (app) => {
     if (coin.registerExtraRoutes) {
       coin.registerExtraRoutes(app);
     }

@@ -5,19 +5,20 @@ var fs = require('fs');
 var path = require('path');
 
 var winston = require('winston');
-var logger = [];
 
-(function () {
+var logger;
+
+exports.initLogger = function (name)  {
     logger = new (winston.Logger)({
         transports: [
             new (winston.transports.Console)(),
             new (winston.transports.File)({
-                filename: config.logFile,
+                filename: config.logPath + '/cawapi-' + name + '.log',
                 level: 'debug'
             }),
         ]
     });
-})();
+};
 
 exports.logger = logger;
 

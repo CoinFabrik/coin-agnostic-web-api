@@ -1,8 +1,8 @@
 var config = {};
 
-config.floodControlDisabled = false;
+config.floodControlDisabled = true;
 config.verbose = true;
 config.writeToStdOut = true;
-config.logFile = '../log/log.log';
+config.logPath = '/var/log/jaxx';
 
 module.exports = config;

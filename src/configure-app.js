@@ -1,4 +1,4 @@
-function configureApp(registerRoutes) {
+function configureApp(coin, registerRoutes) {
   var express = require('express');
   var path = require('path');
   var favicon = require('serve-favicon');
@@ -10,6 +10,8 @@ function configureApp(registerRoutes) {
   var trafficController = require('./tools/trafficController');
 
   var app = express();
+
+  log.initLogger(coin.name.toLowerCase());
 
   app.use(cors());
 
