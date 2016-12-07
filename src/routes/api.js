@@ -121,7 +121,7 @@ function configureRoutes(coin) {
 
   router.put('/rawTransaction', (req, res, next) => {
     var tx = req.body.transaction;
-    console.log('transaction: ' + tx);
+    //console.log('transaction: ' + tx);
     if (tx === null || tx === '') {
       responses.sendResponse(responses.E_SEND_NULL_TX_INVALID, res);
     } else {

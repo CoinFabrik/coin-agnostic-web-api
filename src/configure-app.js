@@ -11,7 +11,7 @@ function configureApp(coin, registerRoutes) {
 
   var app = express();
 
-  log.initLogger(coin.name.toLowerCase());
+  log.initLogger(coin.logger);
 
   app.use(cors());
 
@@ -21,7 +21,7 @@ function configureApp(coin, registerRoutes) {
 
   // uncomment after placing your favicon in /public
   //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-  app.use(logger('dev'));
+  app.use(logger('dev', {stream: {write: function (message, encoding) { coin.logger.info(message); }}}));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());

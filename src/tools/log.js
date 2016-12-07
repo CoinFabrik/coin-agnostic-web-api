@@ -6,21 +6,11 @@ var path = require('path');
 
 var winston = require('winston');
 
-var logger;
+exports.logger;
 
-exports.initLogger = function (name)  {
-    logger = new (winston.Logger)({
-        transports: [
-            new (winston.transports.Console)(),
-            new (winston.transports.File)({
-                filename: config.logPath + '/cawapi-' + name + '.log',
-                level: 'debug'
-            }),
-        ]
-    });
+exports.initLogger = function (logger)  {
+    exports.logger = logger;
 };
-
-exports.logger = logger;
 
 exports.logRequest = function (req, res, next) {
     if (config.verbose) {
@@ -54,7 +44,7 @@ exports.logRequest = function (req, res, next) {
                         + '\x1b[0m';
 
             if (null == line) return;
-            logger.log(line);
+            exports.logger.info(line);
         };
 
         res.on('finish', logRequest);
