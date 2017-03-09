@@ -50,6 +50,7 @@ function configureRoutes(coin) {
   router.get('/transactions/:addrs', validateAddrs, (req, res, next) => {
     var addrs = req.addrs;
     var options = {
+      includeUnconfirmed: req.query.includeUnconfirmed,
       start: req.query.start,
       limit: req.query.limit,
       order: req.query.order
