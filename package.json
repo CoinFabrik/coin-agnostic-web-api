@@ -8,6 +8,7 @@
     "test": "node test"
   },
   "dependencies": {
+    "apicache": "^0.8.4",
     "async": "^2.1.2",
     "body-parser": "~1.15.1",
     "bytes": "^2.4.0",
