@@ -30,7 +30,6 @@ function configureApp(coin, registerRoutes) {
   app.use(express.static(path.join(__dirname, 'public')));
   app.all('/api/*', trafficController.floodControl);
   app.use(log.logRequest);
-  app.use(cache('5 minutes'));
 
   registerRoutes(app);
 

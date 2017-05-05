@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var responses = require('../tools/responses');
 var format = require('../tools/format');
+var apicache = require('apicache');
+var cache = apicache.middleware;
 
 function configureRoutes(coin) {
   var validateAddrs = function (req, res, next) {
@@ -80,7 +82,7 @@ function configureRoutes(coin) {
     })
   })
 
-  router.get('/transactionInfo/:txids', validateTxid, (req, res, next) => {
+  router.get('/transactionInfo/:txids', cache('5 minutes'), validateTxid, (req, res, next) => {
     coin.getTxDetails(req.txids, (err, txs) => {
       if (err) {
         if (err.errCode) {
